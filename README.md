@@ -1,1 +1,1 @@
-# Feige-Fiat-Shamir
+# Feige-Fiat-Shamir - Proiect TCM Paul Horvath
