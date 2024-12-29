@@ -12,7 +12,7 @@ public class Verifier {
     }
 
     public void generateE() {
-        System.out.println("Generating random challenge (e)");
+        System.out.println("Verifier: Generating random challenge (e)");
         SecureRandom random = new SecureRandom();
         this.e = BigInteger.valueOf(random.nextInt(2)); // e = {0, 1}
     }
@@ -20,7 +20,7 @@ public class Verifier {
     public boolean verifyProof(BigInteger x, BigInteger y, Prover prover) {
         BigInteger left = y.modPow(BigInteger.TWO, pbk); // y^2 mod n
         BigInteger right = x.multiply(prover.getV().modPow(this.e, pbk)).mod(pbk); // x * v^e mod n
-        System.out.println(left + "\n" + right);
+        System.out.println("left: " + left + "\nright: " + right);
         return left.equals(right);
     }
 
