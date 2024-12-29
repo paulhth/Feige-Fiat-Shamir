@@ -1,27 +1,28 @@
 import src.service.*;
-import src.model.*;
 import src.util.*;
 import java.math.BigInteger;
 
 public class Main {
     public static void main(String[] args) {
         TTP ttp = new TTP();
-        Keys keys = ttp.generateKeys(512);
+        Prover prover = new Prover();
 
         // instantiate prover and verifier using the same keys provided by the TTP
-        Prover prover = new Prover(keys);
-        Verifier verifier = new Verifier(keys);
+        Verifier verifier = new Verifier();
+        ttp.generatePublicKey(512);
+        ttp.sendPublicKey(prover, verifier);
+        prover.generateR();
+        prover.generateV();
 
-        BigInteger x = prover.generateCommitment();
-        System.out.println("Prover sends x: " + x);
+        verifier.generateE();
+        System.out.println("Verifier sends challenge e: " + verifier.getE());
 
-        BigInteger e = verifier.generateChallenge();
-        System.out.println("Verifier sends challenge e: " + e);
+        prover.generateY(verifier.getE());
+        verifier.generateX(prover.getR());
+        System.out.println("Prover sends X: " + verifier.getX());
 
-        BigInteger y = prover.computeResponse(e);
-        System.out.println("Prover sends y: " + y);
-
-        boolean result = verifier.verifyProof(x, y);
+        //System.out.println("V: " + prover.getV());
+        boolean result = verifier.verifyProof(verifier.getX(), prover.getY(), prover);
         System.out.println("Verification result: " + (result ? "Convinced" : "Not convinced"));
     }
 }
