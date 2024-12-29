@@ -19,7 +19,8 @@ public class Verifier {
 
     public boolean verifyProof(BigInteger x, BigInteger y, Prover prover) {
         BigInteger left = y.modPow(BigInteger.TWO, pbk); // y^2 mod n
-        BigInteger right = x.multiply(prover.getV().modPow(e, pbk)).mod(pbk); // x * v^e mod n
+        BigInteger right = x.multiply(prover.getV().modPow(this.e, pbk)).mod(pbk); // x * v^e mod n
+        System.out.println(left + "\n" + right);
         return left.equals(right);
     }
 

@@ -1,6 +1,4 @@
 import src.service.*;
-import src.util.*;
-import java.math.BigInteger;
 
 public class Main {
     public static void main(String[] args) {
@@ -17,7 +15,7 @@ public class Main {
         verifier.generateE();
         System.out.println("Verifier sends challenge e: " + verifier.getE());
 
-        prover.generateY(verifier.getE());
+        prover.generateY(verifier.getE(), false);
         verifier.generateX(prover.getR());
         System.out.println("Prover sends X: " + verifier.getX());
 

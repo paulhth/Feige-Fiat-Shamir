@@ -21,7 +21,7 @@ public class Prover {
     public void generateSecret(){
         //SecureRandom random = new SecureRandom();
         System.out.println("Prover: Generating secret");
-        this.s = new BigInteger("1"); // generates s
+        this.s = new BigInteger("69"); // generates s
     }
 
     public void setPublicKey(BigInteger pbk) {
@@ -36,9 +36,11 @@ public class Prover {
         return this.v;
     }
 
-    public void generateY(BigInteger e) {
+    public void generateY(BigInteger e, boolean LEGITIMATE) {
         System.out.println("Prover: Generating Y");
-        this.y = r.multiply(s.modPow(e, pbk)).mod(pbk); // y = r * s^e mod n
+        //this.y = r.multiply(s.modPow(e, pbk)).mod(pbk); // y = r * s^e mod n -> THIS IS LEGITIMATE BECAUSE IT KNOWS THE SECRET
+        //this.y = r.multiply(BigInteger.ONE).mod(pbk); // THIS IS ILLEGITIMATE BECAUSE IT DOESN'T KNOW THE SECRET, IT USES 1 AS A PLACEHOLDER FOR S (TRIES TO FABRICATE A SECRET)
+        this.y = LEGITIMATE ? r.multiply(s.modPow(e, pbk)).mod(pbk) : r.multiply(BigInteger.ONE).mod(pbk);
     }
 
     public void generateV() {
