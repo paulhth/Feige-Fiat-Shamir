@@ -1,0 +1,59 @@
+@startuml
+package "src.service" {
+    class TTP {
+        - BigInteger pbk
+        + TTP()
+        + void run()
+        + void generatePublicKey(int bitLength)
+        + void sendPublicKey(Prover prover, Verifier verifier)
+    }
+
+    class Prover {
+        - BigInteger s
+        - BigInteger r
+        - BigInteger pbk
+        - BigInteger y
+        - BigInteger v
+        + Prover()
+        + void setPublicKey(BigInteger pbk)
+        + void generateSecret()
+        + void generateR()
+        + void generateV()
+        + void generateY(BigInteger e, boolean LEGITIMATE)
+        + BigInteger computeResponse(BigInteger challenge)
+        + BigInteger getR()
+        + BigInteger getY()
+        + BigInteger getV()
+    }
+
+    class Verifier {
+        - BigInteger e
+        - BigInteger pbk
+        - BigInteger x
+        + Verifier()
+        + void setPublicKey(BigInteger pbk)
+        + void generateE()
+        + void generateX(BigInteger r)
+        + BigInteger getX()
+        + BigInteger getE()
+        + boolean verifyProof(BigInteger x, BigInteger y, Prover prover)
+    }
+}
+
+package "src.util" {
+    class BigIntUtils {
+        + static BigInteger modPow(BigInteger base, BigInteger exp, BigInteger mod)
+    }
+}
+
+package "Main" {
+    class Main {
+        + static void main(String[] args)
+    }
+}
+
+TTP --> Prover : "setPublicKey()"
+TTP --> Verifier : "setPublicKey()"
+Prover --> Verifier : "getR(), getY()"
+Verifier --> Prover : "getE()"
+@enduml
