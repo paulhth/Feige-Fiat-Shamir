@@ -35,7 +35,7 @@ public class Main {
             System.out.println("=================ROUND: " + iterator);
             prover.generateR();
             verifier.generateE();
-            prover.generateY(verifier.getE(), false); //MODIFY THIS TO FALSE TO MAKE IT ILLEGITIMATE
+            prover.generateY(verifier.getE(), true); //MODIFY THIS TO FALSE TO MAKE IT ILLEGITIMATE
             verifier.generateX(prover.getR());
             result = verifier.verifyProof(verifier.getX(), prover.getY(), prover);
             System.out.println();
