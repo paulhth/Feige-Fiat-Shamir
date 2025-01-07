@@ -23,10 +23,13 @@ public class Main {
         
         //result = verifier.verifyProof(verifier.getX(), prover.getY(), prover);
         //System.out.println("Verification result: " + (result ? "Convinced" : "Not convinced"));
-        double medie = 0;
-        int success = 0;
-        int max = 0, maxoverall = 0;
-        int iteration = 0;
+        double medie = 0.0;
+        int success = 0,
+            max = 0, 
+            maxoverall = 0, 
+            iteration = 0;
+        boolean LEGITIMATE = false;//MODIFY THIS TO FALSE TO MAKE IT ILLEGITIMATE
+
         for(int t=0;t<100;t++){
         boolean result = false;
         int numberOfIterations = 1000,
@@ -35,7 +38,7 @@ public class Main {
             System.out.println("=================ROUND: " + iterator);
             prover.generateR();
             verifier.generateE();
-            prover.generateY(verifier.getE(), true); //MODIFY THIS TO FALSE TO MAKE IT ILLEGITIMATE
+            prover.generateY(verifier.getE(), LEGITIMATE); 
             verifier.generateX(prover.getR());
             result = verifier.verifyProof(verifier.getX(), prover.getY(), prover);
             System.out.println();
@@ -46,16 +49,21 @@ public class Main {
             
         max = 0;
         if(result){
-            System.out.println("Verification result: Convinced --- " + numberOfIterations + " iterations");
+            System.out.println("Verification result: Convinced");
             success ++ ;
         } else {
-            System.out.println("Verification result: Not convinced --- " + iterator + " iterations");
+            System.out.println("Verification result: Not convinced");
         }
         }
         medie = (double)success/100;
+
+        if(!LEGITIMATE)
         System.out.println("=================\n======STATS======\n=================\n" + //
-                        "Success rate: " + medie + "\n" + "Iterations: " + 100 + "\nRounds per iteration: " + 1000 + "\nMax round reached while illegitimate: " + maxoverall + "\nChance of this happening: " + (double)maxoverall/1000 + "\n" + "Happened on iteration: " + iteration + "/1000");
-    }
+                        "Success rate: " + medie + "\n" + "Iterations: " + 100 + "\nRounds per iteration: " + 1000 + "\nMax round reached while illegitimate: " + maxoverall + "\nChance of this happening: " + String.format("%.7f", (double)maxoverall/1000) + "\n" + "Happened on iteration: " + ++iteration + "/1000");
+        else
+        System.out.println("=================\n======STATS======\n=================\n" + //
+                        "Success rate: " + medie + "\n" + "Iterations: " + 100 + "\nRounds per iteration: " + 1000 + "\nMax round reached while llegitimate: " + maxoverall + "\nChance of this happening: " + (double)maxoverall/1000 + "\n" + "Happened on iteration: " + ++iteration + "/1000");
+        }
 }
 
 
