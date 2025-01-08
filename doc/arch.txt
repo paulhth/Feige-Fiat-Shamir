@@ -20,7 +20,6 @@ package "src.service" {
         + void generateR()
         + void generateV()
         + void generateY(BigInteger e, boolean LEGITIMATE)
-        + BigInteger computeResponse(BigInteger challenge)
         + BigInteger getR()
         + BigInteger getY()
         + BigInteger getV()

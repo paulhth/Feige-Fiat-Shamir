@@ -6,7 +6,7 @@ import java.security.SecureRandom;
 public class Verifier {
     private BigInteger e; // Random challenge (e)
     private BigInteger pbk; // Public key
-    private BigInteger x; // Prover's commitment
+    private BigInteger v; // Prover's commitment
 
     public Verifier() {
     }
@@ -18,10 +18,25 @@ public class Verifier {
     }
 
     public boolean verifyProof(BigInteger x, BigInteger y, Prover prover) {
-        BigInteger left = y.modPow(BigInteger.TWO, pbk); // y^2 mod n
-        BigInteger right = x.multiply(prover.getV().modPow(this.e, pbk)).mod(pbk); // x * v^e mod n
-        System.out.println("left: " + left + "\nright: " + right);
+        // left = y^2 mod n
+        BigInteger left = y.modPow(BigInteger.TWO, pbk);
+    
+        // right = x * v^e * sign mod n
+        BigInteger right = x.multiply(v.modPow(this.e, pbk)).multiply(prover.getSign()).mod(pbk);
+    
+        System.out.println("Verifier: Left = " + left);
+        System.out.println("Verifier: Right = " + right);
+    
+        // Ensure x is non-zero
+        if (x.signum() == 0) {
+            System.out.println("x is zero, proof verification failed.");
+            return false;
+        }
         return left.equals(right);
+    }
+
+    public void assignV(BigInteger v) {
+        this.v = v;
     }
 
     public void setPublicKey(BigInteger pbk) {
@@ -32,12 +47,4 @@ public class Verifier {
         return this.e;
     }
 
-    public void generateX(BigInteger r) {
-        System.out.println("Verifier: Generating X");
-        this.x = r.modPow(BigInteger.TWO, pbk); // x = r^2 mod n
-    }
-
-    public BigInteger getX() {
-        return this.x;
-    }
 }
